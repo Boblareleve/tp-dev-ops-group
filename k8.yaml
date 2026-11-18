@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pgdata
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploiment-tp-devops
+  labels:
+    app: tp-devops
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tp-devops
+  template:
+    metadata:
+      labels:
+        app: tp-devops
+    spec:
+      containers:
+      - name: tp-devops-db
+        image: postgres:16
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: boblareleve
+        - name: POSTGRES_PASSWORD
+          value: "1234"
+        - name: POSTGRES_DB
+          value: mydb
+        volumeMounts:
+          - name: pgdata
+            mountPath: /var/lib/postgresql/data
+      - name: tp-devops-back
+        image: boblareleve/tp-devops-back:1.0
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DATABASE_URL
+          value: postgres://boblareleve:1234@localhost:5432/mydb
+      - name: tp-devops-front
+        image: boblareleve/tp-devops-front:1.0
+        ports:
+        - containerPort: 80
+      volumes:
+      - name: pgdata
+        persistentVolumeClaim:
+          claimName: pgdata
