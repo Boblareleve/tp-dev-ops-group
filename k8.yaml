@@ -46,7 +46,7 @@ spec:
         - containerPort: 3000
         env:
         - name: DATABASE_URL
-          value: postgres://boblareleve:1234@localhost:5432/mydb
+          value: postgres://boblareleve:1234@tp-devops-db:5432/mydb
       - name: tp-devops-front
         image: boblareleve/tp-devops-front:1.0
         ports:

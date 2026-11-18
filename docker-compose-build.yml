@@ -13,7 +13,7 @@ services:
   back:
     build: ./back
     environment:
-      DATABASE_URL: postgres://user:password@db:5432/mydb
+      DATABASE_URL: postgres://boblareleve:1234@db:5432/mydb
     ports:
       - "3000:3000"
     depends_on:
