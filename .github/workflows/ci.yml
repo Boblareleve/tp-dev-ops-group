@@ -2,9 +2,9 @@ name: CI Pipeline
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "dev", "val", "prod" ]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: [ "dev", "val", "prod" ]
 
 jobs:
   build-and-test:
@@ -32,4 +32,4 @@ jobs:
 
       - name: Vérifier que Docker Compose se lance bien
         run: |
-          docker compose config
+          docker compose config!
