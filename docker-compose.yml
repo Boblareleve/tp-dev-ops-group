@@ -11,7 +11,7 @@ services:
       - pgdata:/var/lib/postgresql/data
 
   back:
-    image: boblareleve/tp-devops-back:1.0
+    image: boblareleve/tp-devops:back-1.0
     environment:
       DATABASE_URL: postgres://user:password@db:5432/mydb
     ports:
@@ -20,7 +20,7 @@ services:
       - db
 
   front:
-    image: boblareleve/tp-devops-front:1.0
+    image: boblareleve/tp-devops:front-1.0
     ports:
       - "8080:80"
     depends_on:
