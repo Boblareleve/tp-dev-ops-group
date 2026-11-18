@@ -9,11 +9,35 @@ on:
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Récupérer le code
         uses: actions/checkout@v4
 
-      - name: Vérifier que Docker Compose se lance bien et que tout build
+      - name: Verifier que docker et docker compose sont installes
         run: |
-          docker compose -f docker-compose-build.yml up --build
+          docker --version
+          docker compose version
+      
+      - name: Build les images docker
+        run: |
+          docker compose -f docker-compose-build.yml build 
+      
+      - name: Lancer les images docker et verifier que ca fonctionne
+        run: |
+          docker compose -f docker-compose-build.yml up -d
+      
+      - name: Verifier que les conteneurs sont bien lances
+        run: |
+          docker compose -f docker-compose-build.yml ps
+          
+      - name: Recup les logs en cas d'erreur
+        if: failure()
+        run: |
+          docker compose -f docker-compose-build.yml logs
+      
+      - name: Nettoyer
+        if: always()
+        run: |
+          docker compose -f docker-compose-build.yml down -v
