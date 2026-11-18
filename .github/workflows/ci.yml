@@ -14,22 +14,6 @@ jobs:
       - name: Récupérer le code
         uses: actions/checkout@v4
 
-      - name: Configurer Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Installer les dépendances du back
+      - name: Vérifier que Docker Compose se lance bien et que tout build
         run: |
-          cd back
-          npm install
-
-      - name: Installer les dépendances du front
-        run: |
-          cd front
-          npm install
-
-      - name: Vérifier que Docker Compose se lance bien
-        run: |
-          docker compose config!
+          docker compose -f docker-compose-build.yml up --build
