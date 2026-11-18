@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: boblareleve
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: mydb
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  back:
+    image: boblareleve/tp-devops:back-1.0
+    environment:
+      DATABASE_URL: postgres://boblareleve:1234@db:5432/mydb
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+
+  front:
+    image: boblareleve/tp-devops:front-1.0
+    ports:
+      - "8080:80"
+    depends_on:
+      - back
+
+volumes:
+  pgdata:
